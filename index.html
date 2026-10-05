@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prévias da Sala Imersiva ITA — LInA</title>
+  <style>
+    :root {
+      --bg: #090d12;
+      --card-bg: #121820;
+      --border: #212c3b;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --accent: #38bdf8;
+      --accent-hover: #7dd3fc;
+      --badge-bg: #1e293b;
+      --badge-border: #334155;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+      padding: 1.5rem 1rem 3rem;
+    }
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    header {
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.25rem;
+    }
+    .eyebrow {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .descricao {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 0.25rem;
+    }
+    .player-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      margin-bottom: 2rem;
+    }
+    .video-wrapper {
+      background: #000;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000;
+    }
+    .player-info {
+      padding: 1.25rem 1.5rem;
+    }
+    .player-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .cena-titulo {
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .badges {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.65rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: var(--badge-bg);
+      border: 1px solid var(--badge-border);
+      border-radius: 9999px;
+      color: var(--accent);
+    }
+    .metadados {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      padding-top: 0.5rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .meta-item span {
+      color: var(--text);
+      font-weight: 500;
+    }
+    .acoes {
+      margin-top: 1rem;
+      display: flex;
+      gap: 0.75rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #090d12;
+      border: none;
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+    .secao-titulo {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .lista-historico {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .card-historico {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .card-historico:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .card-historico.ativo {
+      border-color: var(--accent);
+      background: #16202c;
+    }
+    .card-historico h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+    .card-historico .card-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .vazio {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="eyebrow">Sala Imersiva ITA · LInA</div>
+      <h1>Prévias do Filme</h1>
+      <p class="descricao">Visualização sob demanda dos testes e cenas renderizados em resolução de acompanhamento.</p>
+    </header>
+
+    <main id="conteudo">
+      <div class="player-card" id="player-container">
+        <div class="video-wrapper">
+          <video id="player" controls playsinline preload="auto">
+            <source id="video-source" src="" type="video/mp4">
+            Seu navegador não suporta reprodução de vídeo HTML5.
+          </video>
+        </div>
+        <div class="player-info">
+          <div class="player-header">
+            <div class="cena-titulo" id="titulo-cena">Carregando prévia...</div>
+            <div class="badges">
+              <span class="badge" id="badge-modo">Modo</span>
+              <span class="badge" id="badge-duracao">Duração</span>
+            </div>
+          </div>
+          <div class="metadados">
+            <div class="meta-item">Data: <span id="meta-data">—</span></div>
+            <div class="meta-item">Commit: <span id="meta-commit">—</span></div>
+            <div class="meta-item">Arquivo: <span id="meta-arquivo">—</span></div>
+          </div>
+          <div class="acoes">
+            <a id="btn-download" class="btn btn-primary" href="#" download>Baixar vídeo MP4</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="secao-titulo">Histórico de Prévias</div>
+      <div class="lista-historico" id="lista-historico"></div>
+    </main>
+  </div>
+
+  <script>
+    const elPlayer = document.getElementById('player');
+    const elVideoSource = document.getElementById('video-source');
+    const elTituloCena = document.getElementById('titulo-cena');
+    const elBadgeModo = document.getElementById('badge-modo');
+    const elBadgeDuracao = document.getElementById('badge-duracao');
+    const elMetaData = document.getElementById('meta-data');
+    const elMetaCommit = document.getElementById('meta-commit');
+    const elMetaArquivo = document.getElementById('meta-arquivo');
+    const elBtnDownload = document.getElementById('btn-download');
+    const elListaHistorico = document.getElementById('lista-historico');
+    const elPlayerContainer = document.getElementById('player-container');
+
+    let previas = [];
+    let indiceAtual = 0;
+
+    function formatarModo(modo) {
+      if (!modo) return 'Padrão';
+      if (modo.includes('360')) return '360° Equirretangular';
+      if (modo.includes('ParedesAB_CD') || modo.includes('Split')) return 'Split-Screen (AB / CD)';
+      return modo;
+    }
+
+    function selecionarPrevia(index) {
+      indiceAtual = index;
+      const item = previas[index];
+      if (!item) return;
+
+      elTituloCena.textContent = item.titulo || `Cena ${item.cena || ''}`;
+      elBadgeModo.textContent = formatarModo(item.modo);
+      elBadgeDuracao.textContent = item.duracao ? `${item.duracao}s` : 'Trecho curto';
+      elMetaData.textContent = item.data || 'Data não informada';
+      elMetaCommit.textContent = item.commit ? item.commit.substring(0, 7) : 'main';
+      elMetaArquivo.textContent = item.arquivo ? item.arquivo.split('/').pop() : 'video.mp4';
+      elBtnDownload.href = item.arquivo;
+
+      elVideoSource.src = item.arquivo;
+      elPlayer.load();
+
+      // Atualiza seleção visual na lista
+      document.querySelectorAll('.card-historico').forEach((card, idx) => {
+        if (idx === index) card.classList.add('ativo');
+        else card.classList.remove('ativo');
+      });
+    }
+
+    function renderizarLista() {
+      elListaHistorico.innerHTML = '';
+      if (!previas || previas.length === 0) {
+        elPlayerContainer.style.display = 'none';
+        elListaHistorico.innerHTML = '<div class="vazio">Nenhuma prévia renderizada ainda. Dispare o workflow no GitHub Actions para gerar o primeiro clipe.</div>';
+        return;
+      }
+
+      elPlayerContainer.style.display = 'block';
+      previas.forEach((item, idx) => {
+        const card = document.createElement('div');
+        card.className = 'card-historico' + (idx === 0 ? ' ativo' : '');
+        card.onclick = () => selecionarPrevia(idx);
+
+        const titulo = document.createElement('h3');
+        titulo.textContent = item.titulo || `Cena ${item.cena || ''}`;
+
+        const meta = document.createElement('div');
+        meta.className = 'card-meta';
+        meta.textContent = `${formatarModo(item.modo)} · ${item.data || ''}`;
+
+        card.appendChild(titulo);
+        card.appendChild(meta);
+        elListaHistorico.appendChild(card);
+      });
+
+      selecionarPrevia(0);
+    }
+
+    // Carrega manifesto com cache-busting
+    fetch('previas.json?t=' + Date.now())
+      .then(res => res.json())
+      .then(data => {
+        previas = Array.isArray(data) ? data : (data.previas || []);
+        renderizarLista();
+      })
+      .catch(err => {
+        console.warn('Não foi possível ler previas.json:', err);
+        renderizarLista();
+      });
+  </script>
+</body>
+</html>
